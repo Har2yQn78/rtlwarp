@@ -1,0 +1,79 @@
+# ---- Go ----
+# Binaries
+/rtlwrap
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binaries and coverage
+*.test
+*.out
+coverage.*
+profile.cov
+
+# Go workspace / vendor
+/vendor/
+go.work
+go.work.sum
+
+# Build output
+/bin/
+/dist/
+/build/
+
+# ---- Env / secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- IDE: JetBrains (GoLand/IntelliJ) ----
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# ---- IDE: VS Code ----
+.vscode/
+*.code-workspace
+.history/
+
+# ---- IDE: Vim / Neovim ----
+*.swp
+*.swo
+*.swn
+Session.vim
+.netrwhist
+tags
+
+# ---- IDE: Emacs ----
+*~
+\#*\#
+.\#*
+.dir-locals.el
+
+# ---- IDE: Sublime ----
+*.sublime-project
+*.sublime-workspace
+
+# ---- IDE: Zed ----
+.zed/
+
+# ---- OS: macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ---- OS: Windows ----
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---- OS: Linux ----
+.fuse_hidden*
+.Trash-*
+.nfs*
