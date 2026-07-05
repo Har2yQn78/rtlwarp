@@ -6,16 +6,16 @@ import (
 )
 
 // Golden cases captured from fribidi and eyeball-verified in Phase 0.
-// U+FEFF fillers appear where a lam-alef ligature absorbed a character —
-// they are zero-width and render invisibly. Digits and LTR runs stay in
-// place; only the RTL runs are reordered and shaped to presentation forms.
+// Shape strips fribidi's zero-width U+FEFF lam-alef fillers. Digits and LTR
+// runs stay in place; only the RTL runs are reordered and shaped to
+// presentation forms.
 var golden = []struct {
 	name, in, want string
 }{
 	{"ascii passthrough", "hello world", "hello world"},
 	{"empty", "", ""},
-	{"pure persian", "سلام", "ﻡﻼ\ufeffﺳ"},
-	{"persian words", "سلام دنیا", "ﺎﯿﻧﺩ ﻡﻼ\ufeffﺳ"},
+	{"pure persian", "سلام", "ﻡﻼﺳ"},
+	{"persian words", "سلام دنیا", "ﺎﯿﻧﺩ ﻡﻼﺳ"},
 	{"persian with digits", "قیمت 100 تومان", "ﻥﺎﻣﻮﺗ 100 ﺖﻤﯿﻗ"},
 	{"mixed ltr run", "کد: git commit", "git commit :ﺪﮐ"},
 	{"emoji and zwnj", "می‌روم 👍", "👍 ﻡﻭﺭ‌ﯽﻣ"},
