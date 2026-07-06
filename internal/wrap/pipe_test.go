@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"rtlwrap/internal/shape"
+	"github.com/Har2yQn78/rtlwrap/internal/shape"
 )
 
 // feed writes in through a pipe in the given chunk sizes and returns output.

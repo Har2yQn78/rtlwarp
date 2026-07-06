@@ -9,7 +9,7 @@ import (
 
 	"github.com/hinshun/vt10x"
 
-	"rtlwrap/internal/shape"
+	"github.com/Har2yQn78/rtlwrap/internal/shape"
 )
 
 // vt10x attribute bits (mirrors the unexported consts in vt10x/state.go).

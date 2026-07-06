@@ -1,0 +1,40 @@
+version: 2
+
+project_name: rtlwrap
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: rtlwrap
+    main: ./cmd/rtlwrap
+    binary: rtlwrap
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+
+archives:
+  - id: rtlwrap
+    formats:
+      - tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  github:
+    owner: Har2yQn78
+    name: rtlwrap
+
+changelog:
+  use: github
+  sort: asc

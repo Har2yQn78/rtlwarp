@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"rtlwrap/internal/shape"
+	"github.com/Har2yQn78/rtlwrap/internal/shape"
 )
 
 // A cursor-positioned redraw (home + clear + Persian) must land the reshaped

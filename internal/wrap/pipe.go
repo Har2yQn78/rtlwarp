@@ -3,8 +3,8 @@ package wrap
 import (
 	"io"
 
-	"rtlwrap/internal/parser"
-	"rtlwrap/internal/shape"
+	"github.com/Har2yQn78/rtlwrap/internal/parser"
+	"github.com/Har2yQn78/rtlwrap/internal/shape"
 )
 
 // pipe is an io.Writer that sits on the child's output: it tokenizes, shapes

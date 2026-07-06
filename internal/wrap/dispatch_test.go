@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"rtlwrap/internal/shape"
+	"github.com/Har2yQn78/rtlwrap/internal/shape"
 )
 
 // dispatch routes normal output to the pipe and alt-screen output to the

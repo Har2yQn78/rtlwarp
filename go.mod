@@ -1,4 +1,4 @@
-module rtlwrap
+module github.com/Har2yQn78/rtlwrap
 
 go 1.26.4
 

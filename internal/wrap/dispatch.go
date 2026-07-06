@@ -4,10 +4,9 @@ import (
 	"io"
 	"sync"
 
-	"rtlwrap/internal/parser"
-	"rtlwrap/internal/termstate"
+	"github.com/Har2yQn78/rtlwrap/internal/parser"
+	"github.com/Har2yQn78/rtlwrap/internal/termstate"
 )
-
 
 type dispatcher struct {
 	mu     sync.Mutex // guards alt/engine/size against the SIGWINCH resize
