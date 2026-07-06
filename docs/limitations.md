@@ -62,8 +62,21 @@ rtlwrap runs two renderers and switches between them automatically:
   ZWJ family and combining-mark stack is not guaranteed. Covered by tests for
   the common cases only.
 
-## Terminals with partial native bidi
+## Terminals that do their own bidi — do NOT wrap them
 
-- Some iTerm2 / Kitty configurations attempt their own bidi reordering. Running
-  rtlwrap on top may double-process text (reorder an already-reordered stream).
-  There is no auto-detection yet — disable one side manually.
+rtlwrap emits text **already reordered** to visual order with joined
+presentation forms. That is correct for a terminal that prints cells
+left-to-right as-is. A terminal that runs its **own** Unicode bidi + Arabic
+shaping will reorder rtlwrap's already-visual output a **second** time, and the
+two reorderings scramble the result (letters and words out of order, joins
+broken).
+
+- **Known bidi-aware: Zed's embedded terminal** (it reuses the code editor's
+  RTL-aware text pipeline). Some iTerm2 / Kitty configurations also attempt it.
+  In these, run the program **directly** (e.g. plain `claude`) — the terminal
+  already shapes RTL, so rtlwrap is not needed and actively hurts.
+- **Known dumb (use rtlwrap here): Ghostty, Warp, foot, xterm, GNOME Terminal,
+  Konsole, VS Code's terminal.** These do no bidi, so rtlwrap's visual output
+  renders correctly.
+- There is **no reliable auto-detection** of a terminal's bidi support, so
+  rtlwrap cannot disable itself. Pick the wrapper based on the terminal.

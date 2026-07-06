@@ -22,25 +22,28 @@ func Run(argv []string) error {
 	}
 	defer ptmx.Close()
 
-	cols, rows := 80, 24
-	if w, h, err := term.GetSize(int(os.Stdout.Fd())); err == nil {
-		cols, rows = w, h
-	}
-	d := newDispatcher(os.Stdout, cols, rows)
+	d := newDispatcher(os.Stdout, 80, 24)
 
-	// Forward terminal resizes to the child's PTY and the termstate engine
-	// (initial + on SIGWINCH).
+	// Forward terminal resizes to the child's PTY, then size the engine from the
+	// PTY, not from os.Stdout: the PTY winsize is what the child actually draws
+	// into, so the engine's grid must match it exactly (an embedded terminal,
+	// e.g. Zed, can report a different size for stdout than the PTY the child
+	// sees). Run once synchronously so both are sized before output flows, then
+	// on every SIGWINCH.
+	resize := func() {
+		_ = pty.InheritSize(os.Stdin, ptmx)
+		if rows, cols, err := pty.Getsize(ptmx); err == nil {
+			d.Resize(cols, rows)
+		}
+	}
+	resize()
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGWINCH)
 	go func() {
 		for range ch {
-			_ = pty.InheritSize(os.Stdin, ptmx)
-			if w, h, err := term.GetSize(int(os.Stdout.Fd())); err == nil {
-				d.Resize(w, h)
-			}
+			resize()
 		}
 	}()
-	ch <- syscall.SIGWINCH
 	defer signal.Stop(ch)
 
 	// Put the real terminal in raw mode so keystrokes reach the child verbatim.
