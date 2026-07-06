@@ -20,21 +20,34 @@ so the project's promises stay defensible.
 - **Some breaks between letters are correct.** ا د ذ ر ز و and friends never
   join to their left. A gap after them is proper Persian, not a bug.
 
-## Redraw-heavy / interactive apps — needs Phase 3
+## Redraw-heavy / interactive apps
 
-- **Full-screen TUIs, spinners, live status lines, streaming input echo**
-  (e.g. Claude Code's interactive prompt) are **not** reliably correct yet.
-  rtlwrap currently shapes text line-by-line as it scrolls; an app that repaints
-  in place with cursor-positioning escape sequences interleaves ANSI codes
-  inside a line, and the fragments between them get shaped independently. Fixed
-  properly by Phase 3 (terminal-state tracking), which reshapes against what is
-  actually on each screen cell.
-- **Symptom before Phase 3:** RTL input may not appear until a boundary
-  character arrives (RTL text is held so a word split across two PTY reads
-  still joins as one line).
+rtlwrap runs two renderers and switches between them automatically:
 
-**Works well today:** scrolling / static output — `rtlwrap cat file.fa`,
-`rtlwrap git log`, program logs, plain command output.
+- **Scrolling / static output** (`rtlwrap cat file.fa`, `rtlwrap git log`,
+  program logs) — shaped line-by-line as it scrolls, streamed into the real
+  terminal's scrollback. Works well.
+- **Full-screen TUIs that use the alternate screen** (vim, less, and
+  full-screen interactive apps) — reshaped against the live terminal-state grid
+  (Phase 3 `termstate`): rtlwrap feeds the child's output into a virtual
+  terminal, then re-emits each row with its RTL runs reshaped and colors
+  remapped onto the reordered cells. This handles cursor-positioned repaints
+  that the scrolling renderer cannot.
+
+**Remaining gaps:**
+
+- **Apps that repaint the *normal* screen in place** (no alternate-screen
+  buffer — some spinners, progress bars, status lines) still go through the
+  scrolling renderer, so in-place cursor moves inside a line can shape
+  fragments independently. Only alternate-screen apps get the grid renderer.
+  Whether a given interactive app (e.g. Claude Code) is fully correct depends on
+  whether it uses the alternate screen.
+- **Cursor position in a reshaped RTL row** can sit one cell off per lam-alef
+  ligature to its left (the zero-width filler is stripped from display but not
+  yet subtracted from the cursor column).
+- **Symptom in the scrolling renderer:** a partial RTL line with no trailing
+  newline is held until the next read or EOF (so a word split across two PTY
+  reads still joins as one line).
 
 ## Mid-line color inside an RTL run
 

@@ -22,12 +22,22 @@ func Run(argv []string) error {
 	}
 	defer ptmx.Close()
 
-	// Forward terminal resizes to the child's PTY (initial + on SIGWINCH).
+	cols, rows := 80, 24
+	if w, h, err := term.GetSize(int(os.Stdout.Fd())); err == nil {
+		cols, rows = w, h
+	}
+	d := newDispatcher(os.Stdout, cols, rows)
+
+	// Forward terminal resizes to the child's PTY and the termstate engine
+	// (initial + on SIGWINCH).
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGWINCH)
 	go func() {
 		for range ch {
 			_ = pty.InheritSize(os.Stdin, ptmx)
+			if w, h, err := term.GetSize(int(os.Stdout.Fd())); err == nil {
+				d.Resize(w, h)
+			}
 		}
 	}()
 	ch <- syscall.SIGWINCH
@@ -46,9 +56,8 @@ func Run(argv []string) error {
 	// child's output is shaped.
 	go func() { _, _ = io.Copy(ptmx, os.Stdin) }()
 
-	p := newPipe(os.Stdout)
-	_, _ = io.Copy(p, ptmx) // returns when the child closes the PTY
-	_ = p.Close()
+	_, _ = io.Copy(d, ptmx) // returns when the child closes the PTY
+	_ = d.Close()
 
 	return c.Wait()
 }

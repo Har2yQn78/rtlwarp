@@ -27,12 +27,19 @@ func shapeLine(line string) string {
 	if line == "" {
 		return line
 	}
-	base := fribidi.ParType(fribidi.ON) // auto-detect base direction
-	vis, _ := fribidi.LogicalToVisual(fribidi.DefaultFlags, []rune(line), &base)
+	vis, _ := ShapeRunes([]rune(line))
 	// fribidi inserts zero-width U+FEFF fillers where a lam-alef ligature
 	// absorbed a character. They add a visible cell gap in some terminals and
-	// carry no meaning for display, so strip them.
-	// ponytail: safe because Phase 2 doesn't use the visual→logical position
-	// map; if Phase 3 needs that map, keep the fillers and strip at render.
-	return strings.ReplaceAll(string(vis.Str), "\ufeff", "")
+	// carry no meaning for display, so strip them here (Shape doesn't need the
+	// position map; ShapeRunes keeps the fillers for callers that do).
+	return strings.ReplaceAll(string(vis), "\ufeff", "")
+}
+
+func ShapeRunes(logical []rune) (visual []rune, visualToLogical []int) {
+	if len(logical) == 0 {
+		return nil, nil
+	}
+	base := fribidi.ParType(fribidi.ON) // auto-detect base direction
+	vis, _ := fribidi.LogicalToVisual(fribidi.DefaultFlags, logical, &base)
+	return vis.Str, vis.VisualToLogical
 }

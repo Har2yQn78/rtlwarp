@@ -12,7 +12,7 @@ This is what happens with Claude Code's Persian output today, and the same under
 
 ## 2. Name
 
-**ligature** — the correct typography term for joined letterforms, which is exactly what Arabic/Persian shaping produces.
+**rtlwarp** — the correct typography term for joined letterforms, which is exactly what Arabic/Persian shaping produces.
 
 - Internal shaping code: `shape.Shape(...)`
 - CLI usage: `ligature claude`, `ligature codex`, `ligature git log`
@@ -24,7 +24,7 @@ The key design decision: **never reason about "RTL runs" directly against a raw 
 ```
 ┌─────────────┐    keystrokes     ┌──────────────┐   keystrokes    ┌─────────────┐
 │  Real user   │ ───────────────► │              │ ──────────────► │  Child proc  │
-│  keyboard    │                  │   ligature   │                 │ (claude,     │
+│  keyboard    │                  │   rtlwarp   │                 │ (claude,     │
 │              │ ◄─────────────── │  (this tool) │ ◄────────────── │  codex, git, │
 │ Real terminal│   fixed output   │              │   raw output    │  etc.)       │
 └─────────────┘                  └──────────────┘                 └─────────────┘
@@ -115,7 +115,7 @@ Purpose: make it trivially installable.
 ## 6. Folder structure
 
 ```
-ligature/
+rtlwarp/
 ├── go.mod
 ├── go.sum
 ├── README.md
