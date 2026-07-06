@@ -27,6 +27,18 @@ archives:
       - tar.gz
     name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
+nfpms:
+  - id: rtlwrap
+    package_name: rtlwrap
+    formats:
+      - deb
+      - rpm
+    maintainer: Harry <uniaiprompt@gmail.com>
+    description: Correct right-to-left rendering for terminal programs that lack bidi support.
+    license: MIT
+    homepage: https://github.com/Har2yQn78/rtlwrap
+    bindir: /usr/bin
+
 checksum:
   name_template: checksums.txt
 

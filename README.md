@@ -41,9 +41,22 @@ go install github.com/Har2yQn78/rtlwrap/cmd/rtlwrap@latest
 
 This puts the `rtlwrap` binary in `$(go env GOPATH)/bin` (add it to your `PATH`).
 
+### Linux package (.deb / .rpm)
+
+Download the package for your distro from the
+[Releases](https://github.com/Har2yQn78/rtlwrap/releases) page. It installs the
+binary to `/usr/bin/rtlwrap`.
+
+```sh
+# Debian / Ubuntu
+sudo dpkg -i rtlwrap_*_linux_amd64.deb
+# Fedora / RHEL
+sudo rpm -i rtlwrap_*_linux_amd64.rpm
+```
+
 ### Prebuilt binary
 
-Download the archive for your OS and architecture from the
+Or download the `tar.gz` for your OS and architecture from the
 [Releases](https://github.com/Har2yQn78/rtlwrap/releases) page, extract it, and
 move the `rtlwrap` binary somewhere on your `PATH`.
 
