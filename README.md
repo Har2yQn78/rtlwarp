@@ -1,21 +1,26 @@
 # rtlwrap
 
-Correct right-to-left (Persian, Arabic, Hebrew) rendering for terminal programs
-that do not support it, without any cooperation from the program itself.
+Correct RTL (Persian, Arabic, Hebrew) text in any terminal application.
 
-rtlwrap is a small PTY wrapper. It sits between a command and your terminal,
-reads the command's output, reshapes the right-to-left runs (bidi reordering
-plus Arabic/Persian cursive joining into presentation forms), and forwards the
-corrected text to the terminal. Your keystrokes pass through unchanged. The
-wrapped program never knows it is there.
+No patches. No plugins. No changes to the application or terminal.
+
+Many terminal applications display Persian, Arabic, and Hebrew backwards or with broken letter joining because most terminals do not implement Unicode bidirectional rendering.
+
+rtlwrap fixes this by sitting between the application and your terminal. It works without modifying either one.
+
+Just run:
+
+rtlwrap <command>
+
+and the output is rendered correctly.
 
 ## Demo
 
 ![rtlwrap before and after](pics/TestPic.png)
 
-Left: a program running under rtlwrap, with Persian in the correct
-right-to-left order and joined. Right: the same program without rtlwrap, where
-the terminal shows the text in logical order and unjoined.
+**Left:** Claude Code running through `rtlwrap` — Persian is displayed in the correct right-to-left order with proper Arabic letter joining.
+
+**Right:** The same output without `rtlwrap` — text appears in logical order, making Persian display backwards and unjoined.
 
 ## Why
 
